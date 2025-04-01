@@ -66,7 +66,58 @@ public:
         }
 		return n == 0 ? 0 : a * 100 / n;
     }
+/*
+给你一个下标从 0 开始的二维整数数组 questions ，其中 questions[i] = [pointsi, brainpoweri] 。
+这个数组表示一场考试里的一系列题目，你需要 按顺序 （也就是从问题 0 开始依次解决），针对每个问题选择 解决 或者 跳过 操作
+解决问题 i 将让你 获得  pointsi 的分数
+但是你将 无法 解决接下来的 brainpoweri 个问题（即只能跳过接下来的 brainpoweri 个问题）
+如果你跳过问题 i ，你可以对下一个问题决定使用哪种操作。
+*/
+    long long mostPoints(vector<vector<int>>& questions) {
+        long long num = 0;
+        long long temp = 0;
+        int i = 0;
+        int j = 0;
+        do {
+            i = j;
+            j++;
+            while (i < questions.size())
+            {
+                num += questions[i][0];
+                if (i += questions[i][1] + 1 > questions.size())
+                {
+                    int m = i;
+                    int n = i;
+                    m += questions[m][1] + 1;
+                    n += questions[n][1] + 2;
+                    if (questions[m][0] > questions[n][0])
+                    {
+                        i += questions[i][1] + 1;
+                    }
+                    else {
+                        i += questions[i][1] + 2;
+                    }
+                    num += questions[i][0];
+                }
+                else {
+                    i += questions[i][1] + 1;
+                }
+            }
+			if (num > temp)
+			{
+				temp = num;
+			}
+            num = 0;
 
-
+		} while (j < questions.size());
+		return temp;
+    }
 };
 
+int main(void) {
+	Solution s;
+    vector<vector<int>> questions = { {21, 5}, {92, 3}, {74, 2}, {39, 4}, {58, 2}, {5, 5}, {49, 4}, {65, 3} };
+	cout << s.mostPoints(questions) << endl;
+	cin.get();
+	return 0;
+}
