@@ -3,10 +3,10 @@
 using namespace std;
 
 /*
-����һ�� n ���ڵ�� ����ͼ ���ڵ���Ϊ 0 �� n - 1 ������ÿ���ڵ� ���� ��һ�����ߡ�
-ͼ��һ����СΪ n �±�� 0 ��ʼ������ edges ��ʾ���ڵ� i ���ڵ� edges[i] ֮����һ������ߡ�����ڵ� i û�г��ߣ���ô edges[i] == -1 ��
-���㷵��ͼ�е� � �������û���κλ����뷵�� -1 ��
-һ����ָ���������յ��� ͬһ�� �ڵ��·����
+给你一个 n 个节点的 有向图 ，节点编号为 0 到 n - 1 ，其中每个节点 至多 有一条出边。
+图用一个大小为 n 下标从 0 开始的数组 edges 表示，节点 i 到节点 edges[i] 之间有一条有向边。如果节点 i 没有出边，那么 edges[i] == -1 。
+请你返回图中的 最长 环，如果没有任何环，请返回 -1 。
+一个环指的是起点和终点是 同一个 节点的路径。
 */
 
 class {
@@ -33,10 +33,10 @@ public:
 
 
 /*
-����һ���±�� 0 ��ʼ���ַ��� s ���Լ�һ���±�� 0 ��ʼ���������� spaces ��
-���� spaces ����ԭ�ַ�������Ҫ���ӿո���±ꡣÿ���ո�Ӧ�ò��뵽�������������ַ�ֵ ֮ǰ ��
-���磬s = "EnjoyYourCoffee" �� spaces = [5, 9] ����ô������Ҫ�� 'Y' �� 'C' ֮ǰ���ӿո��������ַ��ֱ�λ���±� 5 ���±� 9 ����ˣ����յõ� "Enjoy Your Coffee" ��
-�������ӿո񣬲������޸ĺ���ַ�����
+给你一个下标从 0 开始的字符串 s ，以及一个下标从 0 开始的整数数组 spaces 。
+数组 spaces 描述原字符串中需要添加空格的下标。每个空格都应该插入到给定索引处的字符值 之前 。
+例如，s = "EnjoyYourCoffee" 且 spaces = [5, 9] ，那么我们需要在 'Y' 和 'C' 之前添加空格，这两个字符分别位于下标 5 和下标 9 。因此，最终得到 "Enjoy Your Coffee" 。
+请你添加空格，并返回修改后的字符串。
 */
 
 class Solution {
@@ -49,9 +49,9 @@ public:
 		return s;
 	}
 /*
-����һ���ַ���s��һ���ַ�letter
-������s�е���letter�ַ���ռ�İٷֱ�
-����ȡ������ӽ��İٷֱȡ�
+给你一个字符串s和一个字符letter
+返回在s中等于letter字符所占的百分比
+向下取整到最接近的百分比。
 */
     int percentageLetters(string s, char letter)
     {
@@ -67,11 +67,11 @@ public:
 		return n == 0 ? 0 : a * 100 / n;
     }
 /*
-����һ���±�� 0 ��ʼ�Ķ�ά�������� questions ������ questions[i] = [pointsi, brainpoweri] ��
-��������ʾһ���������һϵ����Ŀ������Ҫ ��˳�� ��Ҳ���Ǵ����� 0 ��ʼ���ν���������ÿ������ѡ�� ��� ���� ���� ����
-������� i ������ ���  pointsi �ķ���
-�����㽫 �޷� ����������� brainpoweri �����⣨��ֻ�������������� brainpoweri �����⣩
-������������� i ������Զ���һ���������ʹ�����ֲ�����
+给你一个下标从 0 开始的二维整数数组 questions ，其中 questions[i] = [pointsi, brainpoweri] 。
+这个数组表示一场考试里的一系列题目，你需要 按顺序 （也就是从问题 0 开始依次解决），针对每个问题选择 解决 或者 跳过 操作
+解决问题 i 将让你 获得  pointsi 的分数
+但是你将 无法 解决接下来的 brainpoweri 个问题（即只能跳过接下来的 brainpoweri 个问题）
+如果你跳过问题 i ，你可以对下一个问题决定使用哪种操作。
 */
     long long mostPoints(vector<vector<int>>& questions) {
         long long num = 0;
@@ -112,12 +112,27 @@ public:
 		} while (j < questions.size());
 		return temp;
     }
+/*
+给你一个下标从 0 开始的整数数组 nums 。
+请你从所有满足 i < j < k 的下标三元组 (i, j, k) 中，找出并返回下标三元组的最大值
+如果所有满足条件的三元组的值都是负数，则返回 0 
+*/
+    long long maximumTripletValue(vector<int>& nums) {
+        int n = nums.size();
+        long long res = 0, imax = 0, dmax = 0;
+        for (int k = 0; k < n; k++) {
+            res = max(res, dmax * nums[k]);
+            dmax = max(dmax, imax - nums[k]);
+            imax = max(imax, static_cast<long long>(nums[k]));
+        }
+        return res;
+    }
 };
 
 int main(void) {
 	Solution s;
-    vector<vector<int>> questions = { {21, 5}, {92, 3}, {74, 2}, {39, 4}, {58, 2}, {5, 5}, {49, 4}, {65, 3} };
-	cout << s.mostPoints(questions) << endl;
+    vector<int> nums = {12, 6, 1, 2, 7};
+	cout << s.maximumTripletValue(nums) << endl;
 	cin.get();
 	return 0;
 }
