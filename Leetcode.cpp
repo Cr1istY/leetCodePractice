@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<algorithm>
 using namespace std;
 
 /*
@@ -127,6 +128,41 @@ public:
         }
         return res;
     }
+
+
+/*
+给你一个由 无重复 正整数组成的集合 nums ，请你找出并返回其中最大的整除子集 answer 
+，子集中每一元素对 (answer[i], answer[j]) 都应当满足：
+answer[i] % answer[j] == 0 ，或
+answer[j] % answer[i] == 0
+如果存在多个有效解子集，返回其中任何一个均可。*/
+
+
+	vector<int> largestDivisibleSubset(vector<int>& nums) {
+		int n = nums.size();
+		sort(nums.begin(), nums.end());
+		vector<int> dp(n, 1), pre(n, -1);
+		int maxSize = 0, maxIndex = -1;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < i; j++) {
+				if (nums[i] % nums[j] == 0 && dp[i] < dp[j] + 1) {
+					dp[i] = dp[j] + 1;
+					pre[i] = j;
+				}
+			}
+			if (dp[i] > maxSize) {
+				maxSize = dp[i];
+				maxIndex = i;
+			}
+		}
+		vector<int> result;
+		while (maxIndex != -1) {
+			result.push_back(nums[maxIndex]);
+			maxIndex = pre[maxIndex];
+		}
+		reverse(result.begin(), result.end());
+		return result;
+	}
 };
 
 int main(void) {
